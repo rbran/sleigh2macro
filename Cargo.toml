@@ -1,0 +1,16 @@
+[package]
+name = "sleigh2macro"
+version = "0.1.0"
+edition = "2021"
+readme = "README.md"
+
+[lib]
+proc-macro = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+sleigh2rust = { path = "../sleigh2rust" }
+quote = "1"
+proc-macro2 = "1"
+litrs = "0.4.0"
