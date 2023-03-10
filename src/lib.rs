@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{borrow::Cow, path::Path};
 
 use proc_macro2::{TokenStream, TokenTree};
 use quote::ToTokens;
@@ -18,6 +18,14 @@ pub fn parse(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
             panic!("Invalid parameter Type")
         }
     };
-    let sleigh = sleigh2rust::parse(Path::new(file.value())).unwrap();
+    let filename = Path::new(file.value());
+    let filename = if filename.is_absolute() {
+        Cow::Borrowed(filename)
+    } else {
+        let build_path =
+            std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| "".into());
+        Cow::Owned(Path::new(&build_path).join(&filename))
+    };
+    let sleigh = sleigh2rust::parse(&filename).unwrap();
     sleigh.into_token_stream().into()
 }
