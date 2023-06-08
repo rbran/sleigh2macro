@@ -29,6 +29,6 @@ pub fn generate_disasembler(
             std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| "".into());
         Cow::Owned(Path::new(&build_path).join(&filename))
     };
-    let sleigh = sleigh2rust::parse_disassembler(&filename).unwrap();
+    let sleigh = sleigh2rust::generate_disassembler(&filename).unwrap();
     sleigh.into_token_stream().into()
 }
